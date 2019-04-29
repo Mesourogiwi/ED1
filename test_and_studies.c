@@ -4,6 +4,9 @@ relacionado a ED */
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
+#define MAX 10
+
+//Começo de fila
 
 //estrutura de dados de um elemento simples
 typedef struct Elemento {
@@ -105,6 +108,83 @@ void filas (void) {
 	return;
 }
 
+//Final de fila
+
+//Começo de hashing
+
+//listas de colisões
+typedef struct Colision {
+	int obj;
+	struct Colision *prox;
+}link;
+
+//Estrutura da tabela
+typedef struct Tabela {
+	struct Colision* v[MAX];
+}Tabela;
+
+Tabela *tab;
+
+//inicialização da tabela hashing
+void initTabela () {
+	int h;
+	for (h=0; h<MAX; ++h)
+	{
+		tab->v[h] = NULL;
+	}
+}
+
+int hashGenerator (int valor) {
+	int h=0, soma=0, i;
+	for (i=0; valor!=0; i++) {
+		soma += (valor%10)*(i+1);
+		valor/=10;
+	}
+	h = soma%MAX;
+	return h;
+}
+
+void hashInsertion (int valor) {
+	int index;
+	index = hashGenerator(valor);
+	link* novo = (link*)malloc(sizeof(link));
+	novo->obj = valor;
+	novo->prox = NULL;
+	
+	if(tab->v[index] != NULL){
+		
+		if(valor >= tab->v[index]->obj){
+			
+			link* x = tab->v[index];
+			link* aux;
+			while((valor >= x->obj) && (x != NULL)){
+				
+				aux = x;
+				x = x->prox;
+				
+			}
+			aux->prox = novo;
+			novo->prox = x;
+			return;
+			
+		}
+		novo->prox = tab->v[index];
+		tab->v[index] = novo;
+		return;
+		
+	}
+	tab->v[index] = novo;
+}
+
+
+void hashing (void) {
+	initTabela();
+	hashGenerator(30);
+
+
+	return;
+}
+
 int main (void) {
 	setlocale(LC_ALL, "Portuguese");
 	int option=0;
@@ -116,7 +196,11 @@ int main (void) {
 
 		switch (option) {
 			case 1:
-			fila();
+			filas();
+			break;
+
+			case 2:
+			hashing();
 			break;
 
 			default:
